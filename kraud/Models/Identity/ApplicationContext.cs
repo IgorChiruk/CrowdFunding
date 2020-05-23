@@ -6,7 +6,7 @@ namespace kraud.Models
 {
     public class ApplicationContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationContext() : base("IdentityDb") { }
+        public ApplicationContext() : base("IdentityDb") { }        
 
         public static ApplicationContext Create()
         {

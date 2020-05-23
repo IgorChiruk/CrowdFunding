@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MainPageLayout.cshtml";
+}
+
+
+<a class="nav-link" href="Home/jjj">Features</a>
+
+
+<div class="modal fade animated rotateIn" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">  
+                <p id="LoginAlert" class="is-invalid danger-ic text-hide"></p>
+                <form id="Form1">               
+                    <div class="form-group">                     
+                        <label for="Login">Login</label>
+                        <input type="text" class="form-control" id="Login" name="Login" aria-describedby="LoginHelp" placeholder="Enter login">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputPasswordLogin">Password</label>
+                        <input type="password" class="form-control" id="Password" name="Password" placeholder="Password">
+                    </div>
+                </form>              
+                <button type="button" class="btn btn-primary btn-sm" id="LoginInput">Login</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="CloseLogin">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade animated rollIn" id="ModalRegister" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p id="RegisterAlert" class="is-invalid danger-ic text-hide"></p>
+                <form id="Form2">
+                    <div class="form-group">
+                        <label for="RegisterLogin">Login</label>
+                        <input type="text" class="form-control" id="RegisterLogin" name="Login" aria-describedby="LoginHelp" placeholder="Enter login">
+                    </div>
+                    <div class="form-group">
+                        <label for="RegisterPassword">Password</label>
+                        <input type="password" class="form-control" id="RegisterPassword" name="Password" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="ConfirmRegisterPassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="ConfirmRegisterPassword" name="ConfirmRegisterPassword" placeholder="Confirm Password">
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary btn-sm" id="RegisterInput">Register</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="CloseRegister">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
