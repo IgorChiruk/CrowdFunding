@@ -9,6 +9,8 @@ namespace kraud.Models
         public ApplicationUser()
         {
         }
+
+        public bool IsAdmin { get; set; }
     }
 }
 

@@ -1,5 +1,7 @@
 ﻿$(function () {
 
+    new WOW().init();
+
     IsLogin();
 
     $('#ThisUserLogout').click(function () {
@@ -11,17 +13,30 @@
                     $('#AnonimousUser').show();
                     $('#ThisUserName').text("Hello anonimous!");
                     $('#UsersLink').addClass("text-hide");
+                    $('#MainPageHome').trigger("click"); 
                 }        
-            }, "json");
+            }, "json");         
     });
 
-    $(document).on("ajaxSend", function () {   
-        $('#MainDiv').removeClass("lightSpeedIn");
-        $('#MainDiv').addClass("lightSpeedOut");
-    }).on("ajaxComplete", function () {
-        $('#MainDiv').removeClass("lightSpeedOut")
-        $('#MainDiv').addClass("lightSpeedIn");
+    $(document).on("ajaxSend", function (event, xhr, options) {
+        if ((options.url == "/Home/Register") || (options.url == "/Home/Login")) { return false; }
+        else
+        {
+            $('#MainDiv').removeClass("lightSpeedIn");
+            $('#MainDiv').addClass("lightSpeedOut");
+        }
+    }).on("ajaxComplete", function (event, xhr, options) {
+        if ((options.url == "/Home/Register") || (options.url == "/Home/Login")) { return false; }
+        else
+        { 
+            $('#MainDiv').removeClass("lightSpeedOut");            
+            $('#MainDiv').addClass("lightSpeedIn");
+        }
     });
+
+    $('#MainDiv').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', (function () {
+        $('#MainDiv').removeClass("lightSpeedOut");
+        $('#MainDiv').removeClass("lightSpeedIn"); }));
   
     $('#LoginInput').click(function () {  
         
@@ -45,8 +60,7 @@
             formData,
             function (data) {
                 if (data) {
-                    $('#CloseLogin').trigger("click");
-                    
+                    $('#CloseLogin').trigger("click");            
                     IsLogin();
                 };
                 if (!data) {
@@ -58,7 +72,7 @@
             }, "json");      
     });
 
-    $('#RegisterInput').click(function () {
+    $('#RegisterInput').click(function () {    
        
         if (($('#RegisterLogin').val()) == "") {
             $('#RegisterLogin').addClass("is-invalid");
@@ -116,11 +130,40 @@ function IsLogin() {
             else {
                 $('#AnonimousUser').hide();
                 $('#AuthenticatedUser').show();
-                $('#ThisUserName').text("Hello " + data + "!");
-                if (data == "Admin") {
+                $('#ThisUserName').text("Hello " + data.UserName + "!");
+                if (data.IsAdmin=="True") {
                     $('#UsersLink').removeClass("text-hide");
                 }
             }
         }, "json");
        
+}
+
+function DeleteUseraaaaa(Id) {
+    var formdata = new FormData();
+    formdata.append('id', Id);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/Home/DeleteUser');
+    xhr.send(formdata);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var $UsersUpdate = $('#UsersUpdate'); 
+            $UsersUpdate.trigger("click");
+        }
+    }
+}
+
+function AdminChange(Id) {
+    var formdata = new FormData();
+    formdata.append('id', Id);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/Home/AdminChange');
+    xhr.send(formdata);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var $UsersUpdate = $('#UsersUpdate');
+            $UsersUpdate.trigger("click");
+        }
+    }
+
 }

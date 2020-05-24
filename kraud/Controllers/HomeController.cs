@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace kraud.Controllers
 {
     public class HomeController : Controller
@@ -29,7 +30,7 @@ namespace kraud.Controllers
                 }
                 if (!db.Users.Any())
                 {
-                    ApplicationUser admin = new ApplicationUser() { UserName = "Admin" };
+                    ApplicationUser admin = new ApplicationUser() { UserName = "Admin", IsAdmin=true };
                     UserManager.Create(admin, "Admin");
                     UserManager.AddToRole(admin.Id, "admin");
                 }
@@ -37,10 +38,16 @@ namespace kraud.Controllers
             }          
         }
 
+        public ActionResult MainPage()
+        {
+            return PartialView();
+        }
+
         [Authorize(Roles = "admin")]
         public ActionResult Users()
-        {    
-            return View();
+        {
+            var userlist = UserManager.Users.ToList();
+            return View(userlist);
         }
 
 
@@ -49,7 +56,11 @@ namespace kraud.Controllers
             var identity =Thread.CurrentPrincipal.Identity;
             if (identity.IsAuthenticated)
             {
-                return Json(identity.Name);
+                Dictionary<string, string> user = new Dictionary<string, string>();
+                user.Add("UserName", identity.Name);
+                var IsAdmin = UserManager.Users.Where(x => x.UserName == identity.Name).FirstOrDefault().IsAdmin;
+                user.Add("IsAdmin", IsAdmin.ToString());
+                return Json(user);
             }
             else { return Json(false); }
         }
@@ -82,14 +93,14 @@ namespace kraud.Controllers
             {
                 ApplicationUser newuser = new ApplicationUser
                 {
-                    UserName = loginModel.Login,                 
+                    UserName = loginModel.Login,
+                    IsAdmin = false
                 };
 
-                IdentityResult result =await UserManager.CreateAsync(newuser, loginModel.Password);
-                //UserManager.AddToRole(admin.Id, "admin");
+                IdentityResult result =await UserManager.CreateAsync(newuser, loginModel.Password);           
                 if (result.Succeeded)
                 {
-                    //UserManager.AddToRole(newuser.Id, "user");
+                    UserManager.AddToRole(newuser.Id, "user");
                     ClaimsIdentity claim = await UserManager.CreateIdentityAsync(newuser,
                                             DefaultAuthenticationTypes.ApplicationCookie);
                     AuthenticationManager.SignOut();
@@ -105,6 +116,29 @@ namespace kraud.Controllers
             {
                 return Json(false);
             }
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task<JsonResult> DeleteUser(string Id)
+        {
+            var user = await UserManager.FindByIdAsync(Id);
+            var result =await UserManager.DeleteAsync(user);
+            if (result.Succeeded) { return Json(true); }
+            else { return Json(false); }          
+        }
+
+        [Authorize(Roles = "admin")]
+        public JsonResult AdminChange(string Id)
+        {
+            using (ApplicationContext context = new ApplicationContext())
+            {
+                var user = context.Users.Where(x => x.Id == Id).FirstOrDefault();
+                if (user.IsAdmin) { UserManager.RemoveFromRole(Id, "Admin"); user.IsAdmin = false;  }
+                else if(!user.IsAdmin) { UserManager.AddToRole(Id, "Admin"); user.IsAdmin = true; }
+                context.SaveChanges();
+                return Json(true);
+            }
+            
         }
 
         public JsonResult LogOut()
