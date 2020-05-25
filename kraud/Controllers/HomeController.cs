@@ -121,24 +121,40 @@ namespace kraud.Controllers
         [Authorize(Roles = "admin")]
         public async Task<JsonResult> DeleteUser(string Id)
         {
-            var user = await UserManager.FindByIdAsync(Id);
-            var result =await UserManager.DeleteAsync(user);
-            if (result.Succeeded) { return Json(true); }
-            else { return Json(false); }          
+            var identity = Thread.CurrentPrincipal.Identity;
+            var thisuser = UserManager.FindByName(identity.Name);
+            var isadmin =await UserManager.IsInRoleAsync(thisuser.Id, "admin");    
+            if (!isadmin) { return Json(false); }
+            else {
+                if (thisuser.Id == Id) { return Json(false); }
+                else
+                {
+                    var user = await UserManager.FindByIdAsync(Id);
+                    var result = await UserManager.DeleteAsync(user);
+                    if (result.Succeeded) { return Json(true); }
+                    else { return Json(false); }
+                }             
+            }     
         }
 
         [Authorize(Roles = "admin")]
-        public JsonResult AdminChange(string Id)
+        public async Task<JsonResult> AdminChange(string Id)
         {
             using (ApplicationContext context = new ApplicationContext())
             {
-                var user = context.Users.Where(x => x.Id == Id).FirstOrDefault();
-                if (user.IsAdmin) { UserManager.RemoveFromRole(Id, "Admin"); user.IsAdmin = false;  }
-                else if(!user.IsAdmin) { UserManager.AddToRole(Id, "Admin"); user.IsAdmin = true; }
-                context.SaveChanges();
-                return Json(true);
-            }
-            
+                var identity = Thread.CurrentPrincipal.Identity;
+                var thisuser = UserManager.FindByName(identity.Name);
+                var isadmin = await UserManager.IsInRoleAsync(thisuser.Id, "admin");
+                if (!isadmin) { return Json(false); }
+                else
+                {
+                    var user = context.Users.Where(x => x.Id == Id).FirstOrDefault();
+                    if (user.IsAdmin) { UserManager.RemoveFromRole(Id, "admin"); user.IsAdmin = false; }
+                    else if (!user.IsAdmin) { UserManager.AddToRole(Id, "admin"); user.IsAdmin = true; }
+                    context.SaveChanges();
+                    return Json(true);
+                }           
+            }        
         }
 
         public JsonResult LogOut()

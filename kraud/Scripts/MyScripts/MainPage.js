@@ -3,6 +3,10 @@
     new WOW().init();
 
     IsLogin();
+    ChangeDisplayHeight();
+    //if ($(document).height() <= $(window).height()) {
+    //    $('#pagefooter').addClass("fixed - bottom");
+    //} else ($('#pagefooter').removeClass("fixed-bottom"))
 
     $('#ThisUserLogout').click(function () {
         $.post("/Home/LogOut",
@@ -18,13 +22,18 @@
             }, "json");         
     });
 
+    $('#MainPageHome, #MainPageHref, #MainPageUsers ').click(function () {
+        $('#MainDiv').removeClass("lightSpeedIn");
+        $('#MainDiv').addClass("lightSpeedOut");
+    });
+
     $(document).on("ajaxSend", function (event, xhr, options) {
-        if ((options.url == "/Home/Register") || (options.url == "/Home/Login")) { return false; }
-        else
-        {
-            $('#MainDiv').removeClass("lightSpeedIn");
-            $('#MainDiv').addClass("lightSpeedOut");
-        }
+        //if ((options.url == "/Home/Register") || (options.url == "/Home/Login")) { return false; }
+        //else
+        //{
+        //    $('#MainDiv').removeClass("lightSpeedIn");
+        //    $('#MainDiv').addClass("lightSpeedOut");
+        //}
     }).on("ajaxComplete", function (event, xhr, options) {
         if ((options.url == "/Home/Register") || (options.url == "/Home/Login")) { return false; }
         else
@@ -32,6 +41,7 @@
             $('#MainDiv').removeClass("lightSpeedOut");            
             $('#MainDiv').addClass("lightSpeedIn");
         }
+        ChangeDisplayHeight();
     });
 
     $('#MainDiv').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', (function () {
@@ -134,6 +144,9 @@ function IsLogin() {
                 if (data.IsAdmin=="True") {
                     $('#UsersLink').removeClass("text-hide");
                 }
+                if (data.IsAdmin == "False") {
+                    $('#UsersLink').addClass("text-hide");
+                }
             }
         }, "json");
        
@@ -149,8 +162,10 @@ function DeleteUseraaaaa(Id) {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var $UsersUpdate = $('#UsersUpdate'); 
             $UsersUpdate.trigger("click");
+            IsLogin();
         }
     }
+    
 }
 
 function AdminChange(Id) {
@@ -163,7 +178,15 @@ function AdminChange(Id) {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var $UsersUpdate = $('#UsersUpdate');
             $UsersUpdate.trigger("click");
+            IsLogin();
         }
     }
-
+    
 }
+
+function ChangeDisplayHeight() {
+    if ($(document).height() <= $(window).height()) {
+        $('#pagefooter').addClass("fixed-bottom");
+    } else ($('#pagefooter').removeClass("fixed-bottom"));
+}
+

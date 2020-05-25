@@ -26,7 +26,7 @@
                         <a class="nav-link" id="MainPageHome" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#MainDiv" href="/Home/MainPage">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li id="UsersLink" class="nav-item text-hide">
-                        <a class="nav-link" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#MainDiv" href="/Home/Users">Users</a>
+                        <a id="MainPageUsers" class="nav-link" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#MainDiv" href="/Home/Users">Users</a>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
@@ -42,19 +42,13 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" id="ThisUserName" aria-expanded="false"></a>
                             <div class="dropdown-menu" style="">
-                                <a class="dropdown-item" href="">Companies</a>                                                         
+                                <a class="dropdown-item" href="">My Page</a>
+                                <a class="dropdown-item" href="">My Companies</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown"><button type="button" id="ThisUserLogout" class="btn btn-primary btn-sm">LogOut</button></li>
                     </ul>                  
-                </div>
-
-
-
-                
-
-
-
+                </div>            
             </div>
         </nav>
     </header>
@@ -108,7 +102,7 @@
             </div>
         </div>
     </div>
-    <footer class="page-footer font-small blue">
+    <footer id="pagefooter" class="page-footer font-small blue">
         <div class="footer-copyright text-center py-3">
             © 2020 Copyright:
             <a href="https://github.com/IgorChiruk"> ©Игорь Чирук</a>
@@ -121,5 +115,6 @@
     <script src="~/Scripts/popper.min.js"></script>
     <script src="~/Scripts/mdb.min.js"></script>
     <script src="~/Scripts/MyScripts/MainPage.js"></script>
+
 </body>
 </html>

@@ -169,6 +169,7 @@
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\mdb.min.js" />
     <Content Include="Scripts\MyScripts\MainPage.js" />
+    <Content Include="Scripts\MyScripts\UserPage.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -246,6 +247,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserPageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -277,6 +279,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Users.cshtml" />
     <Content Include="Views\Home\MainPage.cshtml" />
+    <Content Include="Views\UserPage\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
