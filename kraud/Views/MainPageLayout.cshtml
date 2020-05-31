@@ -59,6 +59,14 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
+                    <form>
+                        <button class="btn btn-primary" type="submit" formaction="/Home/GoogleLogin">
+                            Войти с помощью аккаунта Google
+                        </button>
+                        <button class="btn btn-primary" id="Facebook" value="Facebook" type="submit" name="provider" formaction="/Home/ExternalLogin" formmethod="post">
+                            Войти с помощью аккаунта Facebook
+                        </button>
+                    </form>
                     <p id="LoginAlert" class="is-invalid danger-ic text-hide"></p>
                     <form id="Form1">
                         <div class="form-group">

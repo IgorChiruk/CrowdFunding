@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IdentityDb-Web.config Connection String" description="IdentityDb Строка подключения в web.config, используемая приложением для доступа к базе данных." defaultValue="Data Source=mer13.database.windows.net;Initial Catalog=MER13;User ID=mer13;Password=Tenar1561;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\mer13\\source\\repos\\kraud\\kraud\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='IdentityDb']/@connectionString" />
+  </parameter>
+</parameters>

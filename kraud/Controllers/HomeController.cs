@@ -14,8 +14,10 @@ using System.Threading.Tasks;
 
 namespace kraud.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
+        private const string XsrfKey = "XsrfId";
         // GET: Home
         public ActionResult Index()
         {        
@@ -31,7 +33,7 @@ namespace kraud.Controllers
                 if (!db.Users.Any())
                 {
                     ApplicationUser admin = new ApplicationUser() { UserName = "Admin", IsAdmin=true };
-                    UserManager.Create(admin, "Admin");
+                    IdentityResult result =UserManager.Create(admin, "Admin");
                     UserManager.AddToRole(admin.Id, "admin");
                 }
                 return View();
@@ -84,6 +86,110 @@ namespace kraud.Controllers
                 return Json(user.UserName);
             }
                 
+        }
+
+        public ActionResult GoogleLogin(string returnUrl)
+        {
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleLoginCallback",
+                    new { returnUrl = returnUrl })
+            };
+
+            HttpContext.GetOwinContext().Authentication.Challenge(properties, "Google");
+            return new HttpUnauthorizedResult();
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> GoogleLoginCallback(string returnUrl)
+        {
+            ExternalLoginInfo loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            ApplicationUser user = await UserManager.FindAsync(loginInfo.Login);
+
+            if (user == null)
+            {
+                user = new ApplicationUser
+                {
+                    Email = loginInfo.Email,
+                    UserName = loginInfo.DefaultUserName,
+                };
+
+                IdentityResult result = await UserManager.CreateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return View("Error", result.Errors);
+                }
+                else
+                {
+                    result = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
+                    if (!result.Succeeded)
+                    {
+                        return View("Error", result.Errors);
+                    }
+                }
+            }
+
+            ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user,
+                DefaultAuthenticationTypes.ApplicationCookie);
+
+            ident.AddClaims(loginInfo.ExternalIdentity.Claims);
+
+            AuthenticationManager.SignIn(new AuthenticationProperties
+            {
+                IsPersistent = false
+            }, ident);
+
+            return Redirect(returnUrl ?? "/");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            // Запрос перенаправления к внешнему поставщику входа
+            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Home", new { ReturnUrl = returnUrl }));
+        }
+
+
+        [AllowAnonymous]
+        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        {
+            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            ApplicationUser user = await UserManager.FindAsync(loginInfo.Login);
+            if (user == null)
+            {
+                user = new ApplicationUser
+                {
+                    Email = loginInfo.Email,
+                    UserName = loginInfo.DefaultUserName,
+                };
+
+                IdentityResult result = await UserManager.CreateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return View("Error", result.Errors);
+                }
+                else
+                {
+                    result = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
+                    if (!result.Succeeded)
+                    {
+                        return View("Error", result.Errors);
+                    }
+                }
+            }
+
+            ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user,
+                DefaultAuthenticationTypes.ApplicationCookie);
+
+            ident.AddClaims(loginInfo.ExternalIdentity.Claims);
+
+            AuthenticationManager.SignIn(new AuthenticationProperties
+            {
+                IsPersistent = false
+            }, ident);
+
+            return Redirect(returnUrl ?? "/");
         }
 
         public async Task<JsonResult> Register(LoginModel loginModel)
@@ -186,5 +292,36 @@ namespace kraud.Controllers
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
+
+        internal class ChallengeResult : HttpUnauthorizedResult
+        {
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
+            {
+            }
+
+            public ChallengeResult(string provider, string redirectUri, string userId)
+            {
+                LoginProvider = provider;
+                RedirectUri = redirectUri;
+                UserId = userId;
+            }
+
+            public string LoginProvider { get; set; }
+            public string RedirectUri { get; set; }
+            public string UserId { get; set; }
+
+            public override void ExecuteResult(ControllerContext context)
+            {
+                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
+                if (UserId != null)
+                {
+                    properties.Dictionary[XsrfKey] = UserId;
+                }
+                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+            }
+        }
     }
+
+    
 }

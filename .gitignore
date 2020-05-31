@@ -3,3 +3,4 @@ packages/
 .git/
 kraud/bin/
 kraud/Content/MDB/
+kraud/App_Data/

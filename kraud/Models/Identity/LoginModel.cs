@@ -11,5 +11,7 @@ namespace kraud.Models
         public string Login { get; set; }
 
         public string Password { get; set; }
+
+
     }
 }

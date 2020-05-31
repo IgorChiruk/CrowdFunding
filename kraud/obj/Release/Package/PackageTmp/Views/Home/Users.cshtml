@@ -1,0 +1,49 @@
+﻿@using kraud.Models
+@model IEnumerable<ApplicationUser>
+
+@{
+    ViewBag.Title = "Users";
+}
+    <a id="UsersUpdate" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#MainDiv" href="/Home/Users" hidden></a>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">User Name</th>
+            <th scope="col">IsAdmin</th>
+            <th scope="col" colspan="2">Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() <= 1)
+        {
+            <tr>
+                <td colspan="4" class="text-center">No accounts</td>
+            </tr>
+        }
+        else
+        {
+            foreach (ApplicationUser user in Model)
+            {
+                if (user.UserName != "Admin")
+                {
+                    <tr class="table-light">
+                        <th scope="row">@user.UserName</th>
+                        @if (user.IsAdmin)
+                        {
+                            <td>Yes</td>
+                        }
+                        else
+                        {
+                            <td>No</td>
+                        }
+                        <td colspan="2">
+                            <button class="btn btn-success btn-sm rounded" onclick="AdminChange(('@user.Id'))">Change Admin Role</button>
+                            <input type="submit" class="btn btn-danger btn-sm rounded" name="data" value="Delete User" onclick="DeleteUseraaaaa(('@user.Id'))">
+                        </td>                    
+                    </tr>
+                }
+            }
+        }
+
+    </tbody>
+</table> 

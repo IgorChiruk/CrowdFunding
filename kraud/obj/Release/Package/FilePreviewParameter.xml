@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="kraud20200527032958" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\mer13\\source\\repos\\kraud\\kraud\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\mer13\\source\\repos\\kraud\\kraud\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="IdentityDb-Web.config Connection String" description="" value="Data Source=mer13.database.windows.net;Initial Catalog=MER13;User ID=MER13;Password=Tenar1561;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\mer13\\source\\repos\\kraud\\kraud\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='IdentityDb']/@connectionString" />
+  </parameter>
+</parameters>

@@ -1,0 +1,23 @@
+﻿<div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                @using (Html.BeginForm("Login", "Home"))
+                {
+                    @Html.ValidationSummary()
+                    <div class="form-group">
+                        <label for="InputLogin">Login</label>
+                        <input type="text" class="form-control" id="InputLogin" name="Login" aria-describedby="LoginHelp" placeholder="Enter login">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputPasswordLogin">Password</label>
+                        <input type="password" class="form-control" id="InputPasswordLogin" name="Password" placeholder="Password">
+                    </div>
+
+                    <input class="btn btn-primary btn-sm" type="submit" value="Войти" id="LoginInput" />
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

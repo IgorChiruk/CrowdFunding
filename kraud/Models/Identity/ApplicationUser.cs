@@ -1,6 +1,5 @@
-﻿using kraud.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Entity;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace kraud.Models
 {
@@ -11,6 +10,8 @@ namespace kraud.Models
         }
 
         public bool IsAdmin { get; set; }
+
+        public ICollection<Company> Companies { get; set; }
     }
 }
 

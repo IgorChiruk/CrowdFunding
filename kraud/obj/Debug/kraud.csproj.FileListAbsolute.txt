@@ -94,7 +94,11 @@ C:\Users\mer13\source\repos\kraud\kraud\bin\ru\System.Web.Webpages.Deployment.re
 C:\Users\mer13\source\repos\kraud\kraud\bin\ru\System.Web.Webpages.Razor.resources.dll
 C:\Users\mer13\source\repos\kraud\kraud\bin\ru\System.Web.Helpers.resources.dll
 C:\Users\mer13\source\repos\kraud\kraud\bin\ru\System.Web.Mvc.resources.dll
-C:\Users\mer13\source\repos\kraud\kraud\obj\Debug\kraud.csprojAssemblyReference.cache
 C:\Users\mer13\source\repos\kraud\kraud\obj\Debug\kraud.csproj.CopyComplete
 C:\Users\mer13\source\repos\kraud\kraud\obj\Debug\kraud.dll
 C:\Users\mer13\source\repos\kraud\kraud\obj\Debug\kraud.pdb
+C:\Users\mer13\source\repos\kraud\kraud\bin\Microsoft.Owin.Security.Facebook.dll
+C:\Users\mer13\source\repos\kraud\kraud\bin\Microsoft.Owin.Security.Google.dll
+C:\Users\mer13\source\repos\kraud\kraud\bin\Microsoft.Owin.Security.Facebook.xml
+C:\Users\mer13\source\repos\kraud\kraud\bin\Microsoft.Owin.Security.Google.xml
+C:\Users\mer13\source\repos\kraud\kraud\obj\Debug\kraud.csprojAssemblyReference.cache
