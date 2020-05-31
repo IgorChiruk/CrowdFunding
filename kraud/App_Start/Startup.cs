@@ -28,13 +28,13 @@ namespace kraud.App_Start
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             app.UseFacebookAuthentication(
-               appId: "559513334758269",
-               appSecret: "25d65b7cec62921ccf7831d5dd2d068e");
+               appId: "0000000000000000",
+               appSecret: "0000000000000000000000000");
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {           
-                ClientId = "827718720304-p82c2ialtfllkt825gavprdmqrjcmpan.apps.googleusercontent.com",
-                ClientSecret = "WaPRC7739_MkyGaxj_rcxRHl",
+                ClientId = "000000000000000000000000000000000000000",
+                ClientSecret = "000000000000000000",
                 CallbackPath = new PathString("/GoogleLoginCallback"),
             });
 
